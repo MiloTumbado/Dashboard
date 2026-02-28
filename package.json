@@ -1,0 +1,21 @@
+{
+  "name": "training-dashboard-pro",
+  "version": "1.0.0",
+  "description": "Aplicación de escritorio para seguimiento de entrenamientos",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron_config_cache=/tmp/electron-cache electron .",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "training",
+    "fitness",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^35.1.5"
+  }
+}

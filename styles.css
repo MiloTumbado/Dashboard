@@ -1,0 +1,895 @@
+:root {
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-bg-tertiary: #334155;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #94a3b8;
+    --color-accent-primary: #38bdf8;
+    --color-accent-secondary: #0ea5e9;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-purple: #a855f7;
+    --color-pink: #ec4899;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Electron titlebar drag zone */
+.titlebar {
+    -webkit-app-region: drag;
+    height: 38px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 900;
+    background: transparent;
+}
+
+.titlebar button {
+    -webkit-app-region: no-drag;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    padding-top: calc(var(--safe-top) + 1.5rem);
+    padding-bottom: calc(var(--safe-bottom) + 2rem);
+}
+
+.is-electron .container {
+    padding-top: calc(38px + 1rem);
+}
+
+/* Ensure all interactive elements are not drag targets */
+button,
+input,
+select,
+textarea,
+a,
+.workout-item,
+.calendar-day,
+.card,
+.no-drag {
+    -webkit-app-region: no-drag;
+    user-select: text;
+}
+
+.header {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.date-display {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+}
+
+.controls {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+    background: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+}
+
+.btn-primary:hover {
+    background: var(--color-accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.btn-secondary {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-bg-tertiary);
+}
+
+.btn-secondary:hover {
+    background: var(--color-bg-tertiary);
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--color-danger);
+    border: 1px solid transparent;
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* ===== Dashboard Grid ===== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--color-bg-tertiary);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-accent-primary);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.metric-label {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-purple));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* ===== Calories Card ===== */
+.calories-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.calories-remaining {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.calories-consumed {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+
+.calories-consumed strong {
+    color: var(--color-pink);
+}
+
+.calories-quick-add {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+}
+
+.calories-quick-add input {
+    width: 90px;
+    padding: 0.5rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-bg-primary);
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.calories-quick-add input:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+}
+
+.calories-quick-add .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.cal-reset-btn {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+}
+
+.cal-reset-btn:hover {
+    color: var(--color-text-primary);
+}
+
+/* ===== Calendar ===== */
+.calendar-section {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-bg-tertiary);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.4rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    padding: 0.3rem;
+    min-height: 50px;
+}
+
+.calendar-day:hover {
+    background: var(--color-bg-primary);
+    transform: scale(1.05);
+}
+
+.calendar-day.completed {
+    background: linear-gradient(135deg, var(--color-success), #059669);
+    color: white;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--color-accent-primary);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.calendar-day.day-header {
+    background: transparent;
+    cursor: default;
+    aspect-ratio: auto;
+    min-height: 30px;
+}
+
+.calendar-day.day-header:hover {
+    transform: none;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.calendar-day.empty:hover {
+    transform: none;
+}
+
+.day-number {
+    font-weight: 600;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.day-marker {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
+.day-calories {
+    font-size: 0.55rem;
+    color: var(--color-pink);
+    font-weight: 600;
+    margin-top: 1px;
+    line-height: 1;
+    opacity: 0.9;
+}
+
+.calendar-day.completed .day-calories {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== Chart ===== */
+.chart-container {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--color-bg-tertiary);
+    margin-bottom: 2rem;
+}
+
+.chart-container h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 200px;
+    gap: 0.5rem;
+    padding-bottom: 30px;
+}
+
+.bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.bar {
+    width: 100%;
+    background: linear-gradient(180deg, var(--color-accent-primary), var(--color-purple));
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.bar:hover {
+    opacity: 0.8;
+}
+
+.bar-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 6px;
+    white-space: nowrap;
+}
+
+.bar-value {
+    font-size: 0.7rem;
+    color: var(--color-accent-primary);
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+/* ===== Workout Log ===== */
+.workout-log {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--color-bg-tertiary);
+    margin-bottom: 2rem;
+}
+
+.workout-log h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.workout-item {
+    background: var(--color-bg-tertiary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 0.5rem;
+}
+
+.workout-item:hover {
+    background: var(--color-bg-primary);
+    transform: translateX(4px);
+}
+
+.workout-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.workout-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-primary);
+}
+
+.workout-meta {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.workout-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.workout-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+}
+
+.intensity-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.intensity-Baja {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+}
+
+.intensity-Moderada {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--color-accent-primary);
+}
+
+.intensity-Alta {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-warning);
+}
+
+.intensity-Máxima {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--color-danger);
+}
+
+/* ===== Modal ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    border: 1px solid var(--color-bg-tertiary);
+    max-height: 90vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-app-region: no-drag;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    font-size: 1.3rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-bg-primary);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    -webkit-appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ===== Toast ===== */
+.toast {
+    position: fixed;
+    bottom: calc(var(--safe-bottom) + 2rem);
+    right: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 2000;
+    animation: slideInToast 0.3s ease, fadeOutToast 0.3s ease 2.7s forwards;
+    max-width: calc(100vw - 3rem);
+}
+
+.toast-success {
+    background: var(--color-success);
+    color: white;
+}
+
+.toast-error {
+    background: var(--color-danger);
+    color: white;
+}
+
+.toast-info {
+    background: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+}
+
+@keyframes slideInToast {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutToast {
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--color-text-muted);
+}
+
+.empty-state span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+/* ===== PWA install banner ===== */
+.pwa-install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-accent-primary);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    z-index: 800;
+    padding-bottom: calc(var(--safe-bottom) + 1rem);
+}
+
+.pwa-install-banner p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.pwa-install-banner .btn {
+    flex-shrink: 0;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        padding-top: calc(var(--safe-top) + 1rem);
+    }
+
+    .is-electron .container {
+        padding-top: calc(38px + 0.5rem);
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .controls .btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.82rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    .metric-value {
+        font-size: 1.8rem;
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+    }
+
+    .card-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+
+    .calendar-section {
+        padding: 1rem;
+    }
+
+    .calendar-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+
+    .calendar-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .calendar-grid {
+        gap: 0.25rem;
+    }
+
+    .calendar-day {
+        padding: 0.2rem;
+        min-height: 40px;
+        border-radius: 6px;
+    }
+
+    .day-number {
+        font-size: 0.75rem;
+    }
+
+    .day-calories {
+        font-size: 0.5rem;
+    }
+
+    .day-marker {
+        width: 4px;
+        height: 4px;
+    }
+
+    .chart-container {
+        padding: 1rem;
+    }
+
+    .bar-chart {
+        height: 150px;
+    }
+
+    .workout-log {
+        padding: 1rem;
+    }
+
+    .workout-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .workout-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        border-radius: 12px 12px 0 0;
+        max-height: 95vh;
+    }
+
+    .calories-quick-add {
+        flex-wrap: wrap;
+    }
+
+    .calories-quick-add input {
+        width: 70px;
+    }
+}
+
+@media (max-width: 400px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .controls .btn {
+        min-width: 0;
+        flex: 1;
+    }
+}
+
+/* Standalone PWA mode */
+@media (display-mode: standalone) {
+    .titlebar {
+        display: none;
+    }
+
+    .container {
+        padding-top: calc(var(--safe-top) + 1rem);
+    }
+}

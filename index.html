@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TrainPro">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Training Dashboard Pro - Tu entrenamiento personal">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Training Dashboard Pro</title>
+</head>
+
+<body>
+    <!-- Electron-only titlebar drag zone -->
+    <div class="titlebar" id="titlebar"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>💪 Training Dashboard Pro</h1>
+            <div class="date-display" id="currentDate"></div>
+        </div>
+
+        <div class="controls no-drag">
+            <button class="btn btn-primary" id="btnLogWorkout">➕ Registrar</button>
+            <button class="btn btn-secondary" id="btnLogCalories">🍽️ Calorías</button>
+            <button class="btn btn-secondary" id="btnExport">📤 Exportar</button>
+            <button class="btn btn-secondary" id="btnImport">📥 Importar</button>
+            <input type="file" id="importFile" accept=".json" style="display:none">
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Entrenamientos</div>
+                    <div class="card-icon" style="background: rgba(56, 189, 248, 0.15);">🏋️</div>
+                </div>
+                <div class="metric-value" id="totalWorkouts">0</div>
+                <div class="metric-label">Esta semana (meta: <span id="weeklyGoalLabel">6</span>)</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="workoutProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="card" id="caloriesCard">
+                <div class="card-header">
+                    <div class="card-title">Calorías Hoy</div>
+                    <div class="card-icon" style="background: rgba(168, 85, 247, 0.15);">🔥</div>
+                </div>
+                <div class="calories-card-body">
+                    <div class="calories-remaining">
+                        <div class="metric-value" id="caloriesRemaining">2,450</div>
+                    </div>
+                    <div class="metric-label">restantes de <span id="calGoalDisplay">2,450</span> kcal</div>
+                    <div class="calories-consumed">Consumidas: <strong id="calConsumedDisplay">0</strong> kcal</div>
+                    <div class="calories-quick-add">
+                        <input type="number" id="quickCalInput" placeholder="kcal" min="1">
+                        <button class="btn btn-primary btn-sm" id="btnQuickAddCal">+ Añadir</button>
+                        <button class="cal-reset-btn" id="btnResetCals">Reiniciar</button>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="calProgress"
+                            style="width: 0%; background: linear-gradient(90deg, #a855f7, #ec4899);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Racha Actual</div>
+                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.15);">🔥</div>
+                </div>
+                <div class="metric-value" id="currentStreak">0</div>
+                <div class="metric-label">días consecutivos</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="streakProgress"
+                        style="width: 0%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Tiempo Total</div>
+                    <div class="card-icon" style="background: rgba(245, 158, 11, 0.15);">⏱️</div>
+                </div>
+                <div class="metric-value" id="totalTime">0h</div>
+                <div class="metric-label">Esta semana</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="timeProgress"
+                        style="width: 0%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <h2 id="calendarTitle">📅 Calendario</h2>
+                <div class="calendar-nav">
+                    <button class="btn btn-secondary btn-sm" id="btnPrevMonth">◀</button>
+                    <button class="btn btn-secondary btn-sm" id="btnToday">Hoy</button>
+                    <button class="btn btn-secondary btn-sm" id="btnNextMonth">▶</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <div class="chart-container">
+            <h2>📈 Progreso Semanal</h2>
+            <div class="bar-chart" id="weeklyChart"></div>
+        </div>
+
+        <div class="workout-log">
+            <h2>📝 Historial de Entrenamientos</h2>
+            <div id="workoutHistory"></div>
+        </div>
+    </div>
+
+    <!-- Log Workout Modal -->
+    <div class="modal" id="workoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Registrar Entrenamiento</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="workoutForm">
+                <input type="hidden" id="editWorkoutId">
+                <div class="form-group">
+                    <label for="workoutDate">Fecha</label>
+                    <input type="date" id="workoutDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="workoutType">Tipo de Entrenamiento</label>
+                    <select id="workoutType" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Empuje">Día Empuje (Pecho, Hombros, Tríceps)</option>
+                        <option value="Tracción">Día Tracción (Espalda, Bíceps)</option>
+                        <option value="Pierna">Día Pierna</option>
+                        <option value="Torso Estético">Torso Estético (Hombros y Espalda)</option>
+                        <option value="HIIT">HIIT (Alta Intensidad)</option>
+                        <option value="Alberca">Alberca (Natación)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duración (minutos)</label>
+                    <input type="number" id="duration" min="1" max="300" required>
+                </div>
+                <div class="form-group">
+                    <label for="intensity">Intensidad</label>
+                    <select id="intensity" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Baja">Baja</option>
+                        <option value="Moderada">Moderada</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Máxima">Máxima</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notas (opcional)</label>
+                    <textarea id="notes" placeholder="Ejercicios, pesos, sensaciones..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    💾 Guardar Entrenamiento
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Day Detail Modal -->
+    <div class="modal" id="dayModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="dayModalTitle">Detalles del día</h3>
+                <button class="close-btn" id="closeDayModal">&times;</button>
+            </div>
+            <div id="dayModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Calories Modal -->
+    <div class="modal" id="caloriesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🍽️ Registrar Calorías</h3>
+                <button class="close-btn" id="closeCalModal">&times;</button>
+            </div>
+            <form id="caloriesForm">
+                <div class="form-group">
+                    <label for="calDate">Fecha</label>
+                    <input type="date" id="calDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="calDescription">Descripción</label>
+                    <input type="text" id="calDescription" placeholder="Ej: Desayuno, Almuerzo..." required>
+                </div>
+                <div class="form-group">
+                    <label for="calAmount">Calorías (kcal)</label>
+                    <input type="number" id="calAmount" min="1" max="5000" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    🔥 Registrar Calorías
+                </button>
+            </form>
+            <div id="calEntriesToday" style="margin-top:1rem;"></div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+    <script>
+        // Register service worker for PWA (only in browser, not Electron)
+        if ('serviceWorker' in navigator && !window.api) {
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                // Check for updates periodically
+                setInterval(() => reg.update(), 60 * 60 * 1000);
+                console.log('✅ Service Worker registrado — modo offline disponible');
+            }).catch(err => console.log('SW error:', err));
+        }
+
+        // Mark body for Electron-specific styles
+        if (window.api) document.body.classList.add('is-electron');
+
+        // Offline/online indicator
+        function updateOnlineStatus() {
+            const isOnline = navigator.onLine;
+            let badge = document.getElementById('offlineBadge');
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.id = 'offlineBadge';
+                badge.style.cssText = 'position:fixed;top:8px;right:12px;padding:4px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;z-index:999;transition:all 0.3s ease;-webkit-app-region:no-drag;';
+                document.body.appendChild(badge);
+            }
+            if (!isOnline) {
+                badge.textContent = '📴 Offline';
+                badge.style.background = 'rgba(245,158,11,0.2)';
+                badge.style.color = '#f59e0b';
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // iOS Safari "Add to Home Screen" hint
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        if (isIOS && !isStandalone && !window.api) {
+            const banner = document.createElement('div');
+            banner.className = 'pwa-install-banner';
+            banner.innerHTML = `
+                <p>📲 Para usar <strong>offline en el gym</strong>: pulsa <strong>Compartir ⬆️</strong> → <strong>Agregar a inicio</strong></p>
+                <button class="btn btn-sm btn-secondary" onclick="this.parentElement.remove()">✕</button>
+            `;
+            document.body.appendChild(banner);
+        }
+    </script>
+</body>
+
+</html>

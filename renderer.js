@@ -1,6 +1,15 @@
+// ==================== PROFILES ====================
+const PROFILES = {
+    emilio: { name: 'Emilio', initial: 'E', gradient: 'linear-gradient(135deg,#38bdf8,#a855f7)' },
+    karina: { name: 'Karina', initial: 'K', gradient: 'linear-gradient(135deg,#ec4899,#f43f5e)' },
+    benjamin: { name: 'Benjamín', initial: 'B', gradient: 'linear-gradient(135deg,#10b981,#14b8a6)' },
+    iveth: { name: 'Iveth', initial: 'I', gradient: 'linear-gradient(135deg,#f59e0b,#f97316)' }
+};
+let currentProfile = null;
+
 // ==================== DATA LAYER (Electron IPC or localStorage) ====================
 const DB = {
-    _key: 'training_dashboard_pro',
+    _key: 'trainpro_emilio', // updated per profile
     _default: { workouts: [], calories: [], exerciseLogs: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } },
 
     async load() {
@@ -90,21 +99,69 @@ const DB = {
 let appData = { workouts: [], calories: [], exerciseLogs: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } };
 let calendarDate = new Date();
 
-// ==================== INIT ====================
-document.addEventListener('DOMContentLoaded', async () => {
+// ==================== PROFILE INIT ====================
+// Migrate old data to Emilio profile if exists
+(function migrateOldData() {
+    const oldKey = 'training_dashboard_pro';
+    const newKey = 'trainpro_emilio';
+    if (localStorage.getItem(oldKey) && !localStorage.getItem(newKey)) {
+        localStorage.setItem(newKey, localStorage.getItem(oldKey));
+        localStorage.removeItem(oldKey);
+    }
+})();
+document.addEventListener('DOMContentLoaded', () => {
+    patchDB();
+    bindProfileEvents();
+
+    // Check if profile already selected
+    const saved = localStorage.getItem('trainpro_active_profile');
+    if (saved && PROFILES[saved]) {
+        selectProfile(saved);
+    }
+    // Otherwise the profile overlay stays visible
+});
+
+function bindProfileEvents() {
+    document.querySelectorAll('.profile-card').forEach(btn => {
+        btn.addEventListener('click', () => selectProfile(btn.dataset.profile));
+    });
+    document.getElementById('btnSwitchProfile').addEventListener('click', () => {
+        document.getElementById('profileOverlay').classList.remove('hidden');
+        document.getElementById('appContainer').style.display = 'none';
+    });
+}
+
+async function selectProfile(profileKey) {
+    currentProfile = profileKey;
+    localStorage.setItem('trainpro_active_profile', profileKey);
+    DB._key = 'trainpro_' + profileKey;
+
+    // Update UI
+    const p = PROFILES[profileKey];
+    document.getElementById('currentProfileName').textContent = p.name;
+    const avatar = document.getElementById('currentProfileAvatar');
+    avatar.textContent = p.initial;
+    avatar.style.background = p.gradient;
+
+    // Hide overlay, show app
+    document.getElementById('profileOverlay').classList.add('hidden');
+    document.getElementById('appContainer').style.display = '';
+
+    // Load profile data
     appData = await DB.load();
     if (!appData.calories) appData.calories = [];
     if (!appData.exerciseLogs) appData.exerciseLogs = [];
-    // Patch DB with exercise log methods & init routines
-    patchDB();
     updateDate();
     refreshAll();
     bindEvents();
     initRoutines();
-});
+}
 
 // ==================== EVENT BINDING ====================
+let eventsbound = false;
 function bindEvents() {
+    if (eventsbound) return;
+    eventsbound = true;
     document.getElementById('btnLogWorkout').addEventListener('click', openLogWorkout);
     document.getElementById('btnLogCalories').addEventListener('click', openCaloriesModal);
     document.getElementById('btnExport').addEventListener('click', exportData);

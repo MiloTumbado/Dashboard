@@ -18,12 +18,44 @@
 <body>
     <div class="titlebar" id="titlebar"></div>
 
-    <div class="app-container">
+    <!-- ===== PROFILE SELECTOR ===== -->
+    <div class="profile-overlay" id="profileOverlay">
+        <div class="profile-selector">
+            <h2>💪 TrainPro</h2>
+            <p class="profile-subtitle">¿Quién entrena hoy?</p>
+            <div class="profile-grid">
+                <button class="profile-card" data-profile="emilio">
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#38bdf8,#a855f7);">E</div>
+                    <span>Emilio</span>
+                </button>
+                <button class="profile-card" data-profile="karina">
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e);">K</div>
+                    <span>Karina</span>
+                </button>
+                <button class="profile-card" data-profile="benjamin">
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#10b981,#14b8a6);">B</div>
+                    <span>Benjamín</span>
+                </button>
+                <button class="profile-card" data-profile="iveth">
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316);">I</div>
+                    <span>Iveth</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer" style="display:none;">
         <!-- ===== TAB: INICIO ===== -->
         <div class="tab-page active" id="tabHome">
             <div class="tab-content">
                 <div class="header">
-                    <h1>💪 TrainPro</h1>
+                    <div class="header-top">
+                        <h1>💪 TrainPro</h1>
+                        <button class="profile-badge" id="btnSwitchProfile">
+                            <span class="profile-badge-avatar" id="currentProfileAvatar">E</span>
+                            <span id="currentProfileName">Emilio</span>
+                        </button>
+                    </div>
                     <div class="date-display" id="currentDate"></div>
                 </div>
 
@@ -164,13 +196,15 @@
         <!-- Rest Timer Overlay -->
         <div class="timer-overlay" id="timerOverlay">
             <div class="timer-content">
-                <svg class="timer-ring" viewBox="0 0 120 120">
-                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-bg-tertiary)" stroke-width="6" />
-                    <circle id="timerCircle" cx="60" cy="60" r="54" fill="none" stroke="var(--color-accent-primary)"
-                        stroke-width="6" stroke-linecap="round" transform="rotate(-90 60 60)"
-                        style="transition: stroke-dashoffset 0.3s;" />
-                </svg>
-                <div class="timer-display" id="timerDisplay">01:30</div>
+                <div class="timer-ring-wrapper">
+                    <svg class="timer-ring" viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-bg-tertiary)" stroke-width="6" />
+                        <circle id="timerCircle" cx="60" cy="60" r="54" fill="none" stroke="var(--color-accent-primary)"
+                            stroke-width="6" stroke-linecap="round" transform="rotate(-90 60 60)"
+                            style="transition: stroke-dashoffset 0.3s;" />
+                    </svg>
+                    <div class="timer-display" id="timerDisplay">01:30</div>
+                </div>
                 <p class="timer-label">Descanso</p>
                 <div class="timer-buttons">
                     <button class="btn btn-secondary btn-sm" id="btnResetTimer">🔄</button>

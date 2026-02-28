@@ -192,14 +192,19 @@ async function completeSet(exIdx, setNum, exName, isCardio = false) {
         unit: 'kg'
     };
 
-    appData = await DB.addExerciseLog(log);
-    const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
-    renderRoutineForDay(dayOfWeek);
-
-    // Auto-start rest timer
+    // Start timer FIRST (before async save) so user sees immediate feedback
     restTimeLeft = restTimerDefault;
     startRestTimer();
-    showToast(`✓ ${exName} — Serie ${setNum} completada`, 'success');
+    showToast(`✓ ${exName} — Serie ${setNum}`, 'success');
+
+    try {
+        appData = await DB.addExerciseLog(log);
+    } catch (e) {
+        console.error('Error saving log:', e);
+    }
+
+    const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
+    renderRoutineForDay(dayOfWeek);
 }
 
 async function undoSet(exIdx, setNum) {

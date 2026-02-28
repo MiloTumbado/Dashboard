@@ -130,6 +130,16 @@ function bindEvents() {
             if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
         });
     });
+
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById(btn.dataset.tab).classList.add('active');
+            btn.classList.add('active');
+        });
+    });
 }
 
 // ==================== DATE ====================

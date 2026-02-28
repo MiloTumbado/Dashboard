@@ -16,112 +16,149 @@
 </head>
 
 <body>
-    <!-- Electron-only titlebar drag zone -->
     <div class="titlebar" id="titlebar"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>💪 Training Dashboard Pro</h1>
-            <div class="date-display" id="currentDate"></div>
+    <div class="app-container">
+        <!-- ===== TAB: INICIO ===== -->
+        <div class="tab-page active" id="tabHome">
+            <div class="tab-content">
+                <div class="header">
+                    <h1>💪 TrainPro</h1>
+                    <div class="date-display" id="currentDate"></div>
+                </div>
+
+                <button class="btn btn-primary btn-block" id="btnLogWorkout">➕ Registrar Entrenamiento</button>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Entrenamientos</div>
+                            <div class="card-icon" style="background:rgba(56,189,248,0.15);">🏋️</div>
+                        </div>
+                        <div class="metric-value" id="totalWorkouts">0</div>
+                        <div class="metric-label">Esta semana (meta: <span id="weeklyGoalLabel">6</span>)</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="workoutProgress" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="caloriesCard">
+                        <div class="card-header">
+                            <div class="card-title">Calorías Hoy</div>
+                            <div class="card-icon" style="background:rgba(168,85,247,0.15);">🔥</div>
+                        </div>
+                        <div class="calories-card-body">
+                            <div class="metric-value" id="caloriesRemaining">2,450</div>
+                            <div class="metric-label">restantes de <span id="calGoalDisplay">2,450</span> kcal</div>
+                            <div class="calories-consumed">Consumidas: <strong id="calConsumedDisplay">0</strong> kcal
+                            </div>
+                            <div class="calories-quick-add">
+                                <input type="number" id="quickCalInput" placeholder="kcal" min="1">
+                                <button class="btn btn-primary btn-sm" id="btnQuickAddCal">+ Añadir</button>
+                                <button class="cal-reset-btn" id="btnResetCals">Reiniciar</button>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="calProgress"
+                                    style="width:0%;background:linear-gradient(90deg,#a855f7,#ec4899);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Racha</div>
+                            <div class="card-icon" style="background:rgba(16,185,129,0.15);">🔥</div>
+                        </div>
+                        <div class="metric-value" id="currentStreak">0</div>
+                        <div class="metric-label">días consecutivos</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="streakProgress"
+                                style="width:0%;background:linear-gradient(90deg,#10b981,#059669);"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Tiempo</div>
+                            <div class="card-icon" style="background:rgba(245,158,11,0.15);">⏱️</div>
+                        </div>
+                        <div class="metric-value" id="totalTime">0h</div>
+                        <div class="metric-label">Esta semana</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="timeProgress"
+                                style="width:0%;background:linear-gradient(90deg,#f59e0b,#d97706);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-row">
+                        <button class="btn btn-secondary btn-sm" id="btnLogCalories">🍽️ Calorías</button>
+                        <button class="btn btn-secondary btn-sm" id="btnExport">📤 Exportar</button>
+                        <button class="btn btn-secondary btn-sm" id="btnImport">📥 Importar</button>
+                        <input type="file" id="importFile" accept=".json" style="display:none">
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="controls no-drag">
-            <button class="btn btn-primary" id="btnLogWorkout">➕ Registrar</button>
-            <button class="btn btn-secondary" id="btnLogCalories">🍽️ Calorías</button>
-            <button class="btn btn-secondary" id="btnExport">📤 Exportar</button>
-            <button class="btn btn-secondary" id="btnImport">📥 Importar</button>
-            <input type="file" id="importFile" accept=".json" style="display:none">
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Entrenamientos</div>
-                    <div class="card-icon" style="background: rgba(56, 189, 248, 0.15);">🏋️</div>
-                </div>
-                <div class="metric-value" id="totalWorkouts">0</div>
-                <div class="metric-label">Esta semana (meta: <span id="weeklyGoalLabel">6</span>)</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="workoutProgress" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <div class="card" id="caloriesCard">
-                <div class="card-header">
-                    <div class="card-title">Calorías Hoy</div>
-                    <div class="card-icon" style="background: rgba(168, 85, 247, 0.15);">🔥</div>
-                </div>
-                <div class="calories-card-body">
-                    <div class="calories-remaining">
-                        <div class="metric-value" id="caloriesRemaining">2,450</div>
+        <!-- ===== TAB: RUTINA ===== -->
+        <div class="tab-page" id="tabRoutine">
+            <div class="tab-content">
+                <div class="routine-section">
+                    <div class="routine-header">
+                        <div>
+                            <h2 id="routineDayName">💪 Rutina de Hoy</h2>
+                            <p class="routine-subtitle" id="routineDaySubtitle"></p>
+                        </div>
+                        <div class="routine-controls">
+                            <select id="routineDaySelect" class="routine-day-select">
+                                <option value="1">Empuje (Push)</option>
+                                <option value="2">Tracción (Pull)</option>
+                                <option value="3">Alberca – Intervalos</option>
+                                <option value="4">Pierna</option>
+                                <option value="5">Torso Estético</option>
+                                <option value="6">HIIT</option>
+                                <option value="0">Alberca – Largo</option>
+                            </select>
+                            <div class="timer-config">
+                                <label>⏱️</label>
+                                <input type="number" id="restTimerInput" value="90" min="10" max="300" step="5">
+                                <span>seg</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="metric-label">restantes de <span id="calGoalDisplay">2,450</span> kcal</div>
-                    <div class="calories-consumed">Consumidas: <strong id="calConsumedDisplay">0</strong> kcal</div>
-                    <div class="calories-quick-add">
-                        <input type="number" id="quickCalInput" placeholder="kcal" min="1">
-                        <button class="btn btn-primary btn-sm" id="btnQuickAddCal">+ Añadir</button>
-                        <button class="cal-reset-btn" id="btnResetCals">Reiniciar</button>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="calProgress"
-                            style="width: 0%; background: linear-gradient(90deg, #a855f7, #ec4899);"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Racha Actual</div>
-                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.15);">🔥</div>
-                </div>
-                <div class="metric-value" id="currentStreak">0</div>
-                <div class="metric-label">días consecutivos</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="streakProgress"
-                        style="width: 0%; background: linear-gradient(90deg, #10b981, #059669);"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Tiempo Total</div>
-                    <div class="card-icon" style="background: rgba(245, 158, 11, 0.15);">⏱️</div>
-                </div>
-                <div class="metric-value" id="totalTime">0h</div>
-                <div class="metric-label">Esta semana</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="timeProgress"
-                        style="width: 0%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div>
+                    <div id="routineExercises"></div>
+                    <div id="exerciseHistory" style="margin-top:1.5rem;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== ROUTINE SECTION ===== -->
-        <div class="routine-section" id="routineSection">
-            <div class="routine-header">
-                <div>
-                    <h2 id="routineDayName">💪 Rutina de Hoy</h2>
-                    <p class="routine-subtitle" id="routineDaySubtitle"></p>
-                </div>
-                <div class="routine-controls">
-                    <select id="routineDaySelect" class="routine-day-select">
-                        <option value="1">Lunes – Empuje</option>
-                        <option value="2">Martes – Tracción</option>
-                        <option value="3">Miércoles – Alberca</option>
-                        <option value="4">Jueves – Pierna</option>
-                        <option value="5">Viernes – Torso</option>
-                        <option value="6">Sábado – HIIT</option>
-                        <option value="0">Domingo – Alberca</option>
-                    </select>
-                    <div class="timer-config">
-                        <label>⏱️</label>
-                        <input type="number" id="restTimerInput" value="90" min="10" max="300" step="5">
-                        <span>seg</span>
+        <!-- ===== TAB: HISTORIAL ===== -->
+        <div class="tab-page" id="tabHistory">
+            <div class="tab-content">
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <h2 id="calendarTitle">📅 Calendario</h2>
+                        <div class="calendar-nav">
+                            <button class="btn btn-secondary btn-sm" id="btnPrevMonth">◀</button>
+                            <button class="btn btn-secondary btn-sm" id="btnToday">Hoy</button>
+                            <button class="btn btn-secondary btn-sm" id="btnNextMonth">▶</button>
+                        </div>
                     </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div class="chart-container">
+                    <h2>📈 Progreso Semanal</h2>
+                    <div class="bar-chart" id="weeklyChart"></div>
+                </div>
+
+                <div class="workout-log">
+                    <h2>📝 Historial</h2>
+                    <div id="workoutHistory"></div>
                 </div>
             </div>
-            <div id="routineExercises"></div>
-            <div id="exerciseHistory" style="margin-top:1.5rem;"></div>
         </div>
 
         <!-- Rest Timer Overlay -->
@@ -143,27 +180,21 @@
             </div>
         </div>
 
-        <div class="calendar-section">
-            <div class="calendar-header">
-                <h2 id="calendarTitle">📅 Calendario</h2>
-                <div class="calendar-nav">
-                    <button class="btn btn-secondary btn-sm" id="btnPrevMonth">◀</button>
-                    <button class="btn btn-secondary btn-sm" id="btnToday">Hoy</button>
-                    <button class="btn btn-secondary btn-sm" id="btnNextMonth">▶</button>
-                </div>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-
-        <div class="chart-container">
-            <h2>📈 Progreso Semanal</h2>
-            <div class="bar-chart" id="weeklyChart"></div>
-        </div>
-
-        <div class="workout-log">
-            <h2>📝 Historial de Entrenamientos</h2>
-            <div id="workoutHistory"></div>
-        </div>
+        <!-- Bottom Tab Navigation -->
+        <nav class="bottom-nav" id="bottomNav">
+            <button class="nav-item active" data-tab="tabHome">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Inicio</span>
+            </button>
+            <button class="nav-item" data-tab="tabRoutine">
+                <span class="nav-icon">🏋️</span>
+                <span class="nav-label">Rutina</span>
+            </button>
+            <button class="nav-item" data-tab="tabHistory">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Historial</span>
+            </button>
+        </nav>
     </div>
 
     <!-- Log Workout Modal -->
@@ -183,12 +214,12 @@
                     <label for="workoutType">Tipo de Entrenamiento</label>
                     <select id="workoutType" required>
                         <option value="">Seleccionar...</option>
-                        <option value="Empuje">Día Empuje (Pecho, Hombros, Tríceps)</option>
-                        <option value="Tracción">Día Tracción (Espalda, Bíceps)</option>
-                        <option value="Pierna">Día Pierna</option>
-                        <option value="Torso Estético">Torso Estético (Hombros y Espalda)</option>
-                        <option value="HIIT">HIIT (Alta Intensidad)</option>
-                        <option value="Alberca">Alberca (Natación)</option>
+                        <option value="Empuje">Empuje (Pecho, Hombros, Tríceps)</option>
+                        <option value="Tracción">Tracción (Espalda, Bíceps)</option>
+                        <option value="Pierna">Pierna</option>
+                        <option value="Torso Estético">Torso Estético</option>
+                        <option value="HIIT">HIIT</option>
+                        <option value="Alberca">Alberca</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -209,9 +240,7 @@
                     <label for="notes">Notas (opcional)</label>
                     <textarea id="notes" placeholder="Ejercicios, pesos, sensaciones..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    💾 Guardar Entrenamiento
-                </button>
+                <button type="submit" class="btn btn-primary btn-block">💾 Guardar</button>
             </form>
         </div>
     </div>
@@ -247,9 +276,7 @@
                     <label for="calAmount">Calorías (kcal)</label>
                     <input type="number" id="calAmount" min="1" max="5000" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    🔥 Registrar Calorías
-                </button>
+                <button type="submit" class="btn btn-primary btn-block">🔥 Registrar</button>
             </form>
             <div id="calEntriesToday" style="margin-top:1rem;"></div>
         </div>
@@ -258,52 +285,32 @@
     <script src="renderer.js"></script>
     <script src="routines.js"></script>
     <script>
-        // Register service worker for PWA (only in browser, not Electron)
         if ('serviceWorker' in navigator && !window.api) {
             navigator.serviceWorker.register('sw.js').then(reg => {
-                // Check for updates periodically
                 setInterval(() => reg.update(), 60 * 60 * 1000);
-                console.log('✅ Service Worker registrado — modo offline disponible');
-            }).catch(err => console.log('SW error:', err));
+            }).catch(() => { });
         }
-
-        // Mark body for Electron-specific styles
         if (window.api) document.body.classList.add('is-electron');
 
-        // Offline/online indicator
+        // Offline badge
         function updateOnlineStatus() {
-            const isOnline = navigator.onLine;
             let badge = document.getElementById('offlineBadge');
-            if (!badge) {
-                badge = document.createElement('div');
-                badge.id = 'offlineBadge';
-                badge.style.cssText = 'position:fixed;top:8px;right:12px;padding:4px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;z-index:999;transition:all 0.3s ease;-webkit-app-region:no-drag;';
-                document.body.appendChild(badge);
-            }
-            if (!isOnline) {
-                badge.textContent = '📴 Offline';
-                badge.style.background = 'rgba(245,158,11,0.2)';
-                badge.style.color = '#f59e0b';
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
-            }
+            if (!badge) { badge = document.createElement('div'); badge.id = 'offlineBadge'; badge.style.cssText = 'position:fixed;top:8px;right:12px;padding:4px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;z-index:999;'; document.body.appendChild(badge); }
+            if (!navigator.onLine) { badge.textContent = '📴 Offline'; badge.style.background = 'rgba(245,158,11,0.2)'; badge.style.color = '#f59e0b'; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
         }
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
         updateOnlineStatus();
 
-        // iOS Safari "Add to Home Screen" hint
+        // iOS install hint
         const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
         if (isIOS && !isStandalone && !window.api) {
-            const banner = document.createElement('div');
-            banner.className = 'pwa-install-banner';
-            banner.innerHTML = `
-                <p>📲 Para usar <strong>offline en el gym</strong>: pulsa <strong>Compartir ⬆️</strong> → <strong>Agregar a inicio</strong></p>
-                <button class="btn btn-sm btn-secondary" onclick="this.parentElement.remove()">✕</button>
-            `;
-            document.body.appendChild(banner);
+            const b = document.createElement('div');
+            b.className = 'pwa-install-banner';
+            b.innerHTML = '<p>📲 <strong>Compartir ⬆️</strong> → <strong>Agregar a inicio</strong> para usar offline</p><button class="btn btn-sm btn-secondary" onclick="this.parentElement.remove()">✕</button>';
+            document.body.appendChild(b);
         }
     </script>
 </body>

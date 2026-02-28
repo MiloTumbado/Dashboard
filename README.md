@@ -1,5 +1,7 @@
 # 💪 Training Dashboard Pro
 
+> 🌐 **Tu app**: [https://milotumbado.github.io/Dashboard/](https://milotumbado.github.io/Dashboard/)
+
 Aplicación personal de seguimiento de entrenamientos y calorías. Funciona como **app de escritorio** (Electron) y como **PWA en tu iPhone** (funciona offline en el gym).
 
 ---

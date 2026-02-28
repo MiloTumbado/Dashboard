@@ -1,7 +1,7 @@
 // ==================== DATA LAYER (Electron IPC or localStorage) ====================
 const DB = {
     _key: 'training_dashboard_pro',
-    _default: { workouts: [], calories: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } },
+    _default: { workouts: [], calories: [], exerciseLogs: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } },
 
     async load() {
         if (window.api) return await window.api.loadData();
@@ -10,6 +10,7 @@ const DB = {
             if (raw) {
                 const data = JSON.parse(raw);
                 if (!data.calories) data.calories = [];
+                if (!data.exerciseLogs) data.exerciseLogs = [];
                 return data;
             }
         } catch (e) { }
@@ -86,16 +87,20 @@ const DB = {
 };
 
 // ==================== STATE ====================
-let appData = { workouts: [], calories: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } };
+let appData = { workouts: [], calories: [], exerciseLogs: [], settings: { weeklyGoal: 6, dailyCalories: 2450 } };
 let calendarDate = new Date();
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', async () => {
     appData = await DB.load();
     if (!appData.calories) appData.calories = [];
+    if (!appData.exerciseLogs) appData.exerciseLogs = [];
+    // Patch DB with exercise log methods & init routines
+    patchDB();
     updateDate();
     refreshAll();
     bindEvents();
+    initRoutines();
 });
 
 // ==================== EVENT BINDING ====================

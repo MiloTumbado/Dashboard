@@ -1,9 +1,10 @@
-const CACHE_NAME = 'training-dashboard-v2';
+const CACHE_NAME = 'training-dashboard-v3';
 const ASSETS = [
     './',
     './index.html',
     './styles.css',
     './renderer.js',
+    './routines.js',
     './manifest.json',
     './icons/icon-192.png',
     './icons/icon-512.png'

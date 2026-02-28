@@ -1,0 +1,345 @@
+// ==================== ROUTINE DATA ====================
+const ROUTINES = {
+    1: { // Lunes
+        name: '💪 Empuje (Push)', subtitle: 'Pecho, Hombros, Tríceps',
+        exercises: [
+            { name: 'Press Inclinado con Mancuernas', sets: 4, reps: '10', note: 'Volumen parte alta del pecho' },
+            { name: 'Press Militar (máquina o barra)', sets: 3, reps: '10', note: '' },
+            { name: 'Elevaciones Laterales (polea/mancuerna)', sets: 4, reps: '15-20', note: 'Clave para la anchura' },
+            { name: 'Fondos en Paralelas', sets: 3, reps: 'Al fallo', note: '' },
+            { name: 'Extensión de Tríceps en Polea', sets: 3, reps: '12', note: '' }
+        ]
+    },
+    2: { // Martes
+        name: '🔗 Tracción (Pull)', subtitle: 'Espalda, Bíceps',
+        exercises: [
+            { name: 'Dominadas / Jalón al Pecho', sets: 4, reps: '8-10', note: '' },
+            { name: 'Remo con Barra / Máquina', sets: 3, reps: '10', note: '' },
+            { name: 'Pullover en Polea Alta', sets: 3, reps: '15', note: 'Aísla el dorsal' },
+            { name: 'Face-Pulls', sets: 3, reps: '15', note: 'Salud de hombro y postura' },
+            { name: 'Curl Bíceps con Barra Z', sets: 3, reps: '12', note: '' }
+        ]
+    },
+    3: { // Miércoles
+        name: '🏊 Alberca – Intervalos', subtitle: 'Natación Miércoles',
+        isCardio: true,
+        exercises: [
+            { name: '200m calentamiento suave', sets: 1, reps: '—', note: '' },
+            { name: '50m ritmo fuerte + 30s descanso', sets: 8, reps: '2 largos', note: 'Máxima intensidad' },
+            { name: '100m afloje', sets: 1, reps: '—', note: '' }
+        ]
+    },
+    4: { // Jueves
+        name: '🦵 Pierna', subtitle: 'Tren inferior completo',
+        exercises: [
+            { name: 'Prensa de Piernas', sets: 4, reps: '12', note: '' },
+            { name: 'Peso Muerto Rumano', sets: 4, reps: '10', note: 'Femorales y glúteos' },
+            { name: 'Extensiones de Cuádriceps', sets: 3, reps: '15', note: '' },
+            { name: 'Curl de Pierna Acostado', sets: 3, reps: '15', note: '' },
+            { name: 'Elevación de Talones (Pantorrilla)', sets: 4, reps: '20', note: '' }
+        ]
+    },
+    5: { // Viernes
+        name: '🔺 Torso Estético', subtitle: 'Enfoque V-Taper',
+        exercises: [
+            { name: 'Press de Hombros Sentado', sets: 3, reps: '10', note: '' },
+            { name: 'Jalón al Pecho Agarre Cerrado', sets: 3, reps: '12', note: '' },
+            { name: 'Elevaciones Laterales (mancuernas)', sets: 5, reps: '15-20', note: 'Bajo peso, mucha técnica' },
+            { name: 'Remo a Una Mano con Mancuerna', sets: 3, reps: '12/lado', note: '' },
+            { name: 'Cruces de Poleas (Crossovers)', sets: 3, reps: '15', note: '' }
+        ]
+    },
+    6: { // Sábado
+        name: '⚡ HIIT – Alta Intensidad', subtitle: 'Cardio explosivo',
+        isCardio: true,
+        exercises: [
+            { name: 'Calentamiento', sets: 1, reps: '5 min', note: '' },
+            { name: 'Sprint 30s + Descanso 30s (Caminadora)', sets: 1, reps: '20 min', note: 'Máxima velocidad' },
+            { name: '— O Circuito Funcional (4 rondas) —', sets: 0, reps: '', note: '' },
+            { name: 'Burpees', sets: 4, reps: '30 seg', note: '' },
+            { name: 'Mountain Climbers', sets: 4, reps: '30 seg', note: '' },
+            { name: 'Sentadillas con Salto', sets: 4, reps: '30 seg', note: '1 min descanso entre rondas' }
+        ]
+    },
+    0: { // Domingo
+        name: '🏊 Alberca – Largo', subtitle: 'Recuperación activa',
+        isCardio: true,
+        exercises: [
+            { name: 'Nado continuo (Crol o Pecho)', sets: 1, reps: '30-40 min', note: 'Ritmo controlado, respiración estable' },
+        ]
+    }
+};
+
+// ==================== STATE ====================
+let restTimerInterval = null;
+let restTimeLeft = 0;
+let restTimerDefault = 90;
+
+// ==================== INIT ====================
+function initRoutines() {
+    renderTodayRoutine();
+    bindRoutineEvents();
+}
+
+function bindRoutineEvents() {
+    document.getElementById('btnStartTimer').addEventListener('click', startRestTimer);
+    document.getElementById('btnStopTimer').addEventListener('click', stopRestTimer);
+    document.getElementById('btnResetTimer').addEventListener('click', resetRestTimer);
+    document.getElementById('restTimerInput').addEventListener('change', (e) => {
+        restTimerDefault = parseInt(e.target.value) || 90;
+    });
+    document.getElementById('routineDaySelect').addEventListener('change', (e) => {
+        renderRoutineForDay(parseInt(e.target.value));
+    });
+}
+
+// ==================== RENDER ROUTINE ====================
+function renderTodayRoutine() {
+    const dayOfWeek = new Date().getDay();
+    document.getElementById('routineDaySelect').value = dayOfWeek;
+    renderRoutineForDay(dayOfWeek);
+}
+
+function renderRoutineForDay(dayOfWeek) {
+    const routine = ROUTINES[dayOfWeek];
+    const container = document.getElementById('routineExercises');
+    const todayStr = formatDateISO(new Date());
+
+    document.getElementById('routineDayName').textContent = routine.name;
+    document.getElementById('routineDaySubtitle').textContent = routine.subtitle;
+
+    // Get today's logged sets
+    const todayLogs = (appData.exerciseLogs || []).filter(l => l.date === todayStr);
+
+    container.innerHTML = routine.exercises.map((ex, exIdx) => {
+        if (ex.sets === 0) {
+            // Section divider
+            return `<div class="exercise-divider">${ex.name}</div>`;
+        }
+
+        const setInputs = [];
+        for (let s = 1; s <= ex.sets; s++) {
+            const log = todayLogs.find(l => l.exerciseIdx === exIdx && l.setNumber === s);
+            const isDone = !!log;
+            setInputs.push(`
+                <div class="set-row ${isDone ? 'set-done' : ''}" id="set-${exIdx}-${s}">
+                    <span class="set-label">S${s}</span>
+                    <input type="number" class="set-weight-input" id="weight-${exIdx}-${s}"
+                           placeholder="kg" value="${log ? log.weight : ''}" min="0" step="0.5"
+                           ${isDone ? 'disabled' : ''}>
+                    <input type="number" class="set-reps-input" id="reps-${exIdx}-${s}"
+                           placeholder="${ex.reps}" value="${log ? log.reps : ''}" min="0"
+                           ${isDone ? 'disabled' : ''}>
+                    ${isDone
+                    ? `<button class="btn-set btn-set-undo" onclick="undoSet(${exIdx}, ${s})">↩️</button>`
+                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s}, '${ex.name}')">✓</button>`
+                }
+                </div>
+            `);
+        }
+
+        const completedSets = todayLogs.filter(l => l.exerciseIdx === exIdx).length;
+        const allDone = completedSets >= ex.sets;
+
+        return `
+            <div class="exercise-card ${allDone ? 'exercise-complete' : ''}">
+                <div class="exercise-header">
+                    <div class="exercise-name">${ex.name}</div>
+                    <div class="exercise-target">${ex.sets} × ${ex.reps}</div>
+                </div>
+                ${ex.note ? `<div class="exercise-note">💡 ${ex.note}</div>` : ''}
+                ${!routine.isCardio ? `
+                    <div class="sets-container">${setInputs.join('')}</div>
+                    <div class="exercise-progress-mini">
+                        <div class="progress-bar" style="height:4px;margin-top:0.5rem;">
+                            <div class="progress-fill" style="width:${(completedSets / ex.sets) * 100}%;background:linear-gradient(90deg,var(--color-success),#059669);"></div>
+                        </div>
+                    </div>
+                ` : `
+                    <div class="sets-container">
+                        ${Array.from({ length: ex.sets }, (_, s) => {
+            const log = todayLogs.find(l => l.exerciseIdx === exIdx && l.setNumber === s + 1);
+            return `<div class="set-row ${log ? 'set-done' : ''}">
+                                <span class="set-label">${ex.sets > 1 ? 'R' + (s + 1) : '—'}</span>
+                                <span class="set-reps-display">${ex.reps}</span>
+                                ${log
+                    ? `<button class="btn-set btn-set-undo" onclick="undoSet(${exIdx}, ${s + 1})">↩️</button>`
+                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s + 1}, '${ex.name}', true)">✓</button>`}
+                            </div>`;
+        }).join('')}
+                    </div>
+                `}
+            </div>
+        `;
+    }).join('');
+
+    renderExerciseHistory(dayOfWeek);
+}
+
+// ==================== COMPLETE / UNDO SET ====================
+async function completeSet(exIdx, setNum, exName, isCardio = false) {
+    const todayStr = formatDateISO(new Date());
+    const weight = isCardio ? 0 : parseFloat(document.getElementById(`weight-${exIdx}-${setNum}`)?.value) || 0;
+    const reps = isCardio ? 0 : parseInt(document.getElementById(`reps-${exIdx}-${setNum}`)?.value) || 0;
+
+    const log = {
+        date: todayStr,
+        exerciseIdx: exIdx,
+        exerciseName: exName,
+        setNumber: setNum,
+        weight: weight,
+        reps: reps,
+        unit: 'kg'
+    };
+
+    appData = await DB.addExerciseLog(log);
+    const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
+    renderRoutineForDay(dayOfWeek);
+
+    // Auto-start rest timer
+    restTimeLeft = restTimerDefault;
+    startRestTimer();
+    showToast(`✓ ${exName} — Serie ${setNum} completada`, 'success');
+}
+
+async function undoSet(exIdx, setNum) {
+    const todayStr = formatDateISO(new Date());
+    const log = (appData.exerciseLogs || []).find(
+        l => l.date === todayStr && l.exerciseIdx === exIdx && l.setNumber === setNum
+    );
+    if (log) {
+        appData = await DB.deleteExerciseLog(log.id);
+        const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
+        renderRoutineForDay(dayOfWeek);
+    }
+}
+
+// ==================== REST TIMER ====================
+function startRestTimer() {
+    if (restTimerInterval) clearInterval(restTimerInterval);
+    if (restTimeLeft <= 0) restTimeLeft = restTimerDefault;
+
+    const timerOverlay = document.getElementById('timerOverlay');
+    timerOverlay.classList.add('active');
+    updateTimerDisplay();
+
+    restTimerInterval = setInterval(() => {
+        restTimeLeft--;
+        updateTimerDisplay();
+        if (restTimeLeft <= 0) {
+            clearInterval(restTimerInterval);
+            restTimerInterval = null;
+            timerOverlay.classList.remove('active');
+            // Vibrate if supported
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            showToast('⏱️ ¡Descanso terminado! Siguiente serie 💪', 'info');
+        }
+    }, 1000);
+}
+
+function stopRestTimer() {
+    if (restTimerInterval) {
+        clearInterval(restTimerInterval);
+        restTimerInterval = null;
+    }
+    document.getElementById('timerOverlay').classList.remove('active');
+}
+
+function resetRestTimer() {
+    restTimeLeft = restTimerDefault;
+    updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+    const mins = Math.floor(restTimeLeft / 60);
+    const secs = restTimeLeft % 60;
+    document.getElementById('timerDisplay').textContent =
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+    // Progress ring
+    const pct = restTimeLeft / restTimerDefault;
+    const circle = document.getElementById('timerCircle');
+    if (circle) {
+        const circumference = 2 * Math.PI * 54;
+        circle.style.strokeDasharray = circumference;
+        circle.style.strokeDashoffset = circumference * (1 - pct);
+    }
+}
+
+// ==================== EXERCISE HISTORY ====================
+function renderExerciseHistory(dayOfWeek) {
+    const container = document.getElementById('exerciseHistory');
+    const routine = ROUTINES[dayOfWeek];
+    if (!routine || routine.isCardio) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const allLogs = (appData.exerciseLogs || []).filter(l => {
+        return routine.exercises.some((ex, idx) => ex.name === l.exerciseName);
+    });
+
+    if (allLogs.length === 0) {
+        container.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.85rem;text-align:center;padding:1rem;">Sin historial aún para esta rutina</p>';
+        return;
+    }
+
+    // Group by exercise, get max weight per date
+    const exerciseMap = {};
+    allLogs.forEach(l => {
+        if (!exerciseMap[l.exerciseName]) exerciseMap[l.exerciseName] = {};
+        if (!exerciseMap[l.exerciseName][l.date] || l.weight > exerciseMap[l.exerciseName][l.date]) {
+            exerciseMap[l.exerciseName][l.date] = l.weight;
+        }
+    });
+
+    container.innerHTML = `<h4 style="margin-bottom:0.75rem;color:var(--color-text-secondary);">📊 Progresión de pesos</h4>` +
+        Object.entries(exerciseMap).map(([exName, dateMap]) => {
+            const entries = Object.entries(dateMap).sort((a, b) => a[0].localeCompare(b[0]));
+            const lastWeight = entries[entries.length - 1][1];
+            const firstWeight = entries[0][1];
+            const diff = lastWeight - firstWeight;
+            const trend = diff > 0 ? `<span style="color:var(--color-success)">↑ +${diff}kg</span>` :
+                diff < 0 ? `<span style="color:var(--color-danger)">↓ ${diff}kg</span>` : '';
+
+            const miniChart = entries.slice(-7).map(([d, w]) => {
+                const max = Math.max(...entries.map(e => e[1]), 1);
+                const pct = (w / max) * 100;
+                return `<div class="mini-bar" style="height:${Math.max(pct, 8)}%" title="${d}: ${w}kg"></div>`;
+            }).join('');
+
+            return `
+                <div class="history-exercise-row">
+                    <div class="history-exercise-info">
+                        <span class="history-exercise-name">${exName}</span>
+                        <span class="history-exercise-best">Mejor: ${lastWeight}kg ${trend}</span>
+                    </div>
+                    <div class="mini-chart">${miniChart}</div>
+                </div>`;
+        }).join('');
+}
+
+// ==================== DB EXTENSIONS ====================
+// Added to DB object in renderer.js via patch
+function patchDB() {
+    DB.addExerciseLog = async function (log) {
+        if (window.api && window.api.addExerciseLog) return await window.api.addExerciseLog(log);
+        const data = await this.load();
+        if (!data.exerciseLogs) data.exerciseLogs = [];
+        log.id = Date.now().toString();
+        data.exerciseLogs.push(log);
+        await this.save(data);
+        return data;
+    };
+    DB.deleteExerciseLog = async function (id) {
+        if (window.api && window.api.deleteExerciseLog) return await window.api.deleteExerciseLog(id);
+        const data = await this.load();
+        data.exerciseLogs = (data.exerciseLogs || []).filter(l => l.id !== id);
+        await this.save(data);
+        return data;
+    };
+}
+
+// ==================== GLOBAL EXPOSURE ====================
+window.completeSet = completeSet;
+window.undoSet = undoSet;

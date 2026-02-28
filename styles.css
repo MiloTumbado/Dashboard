@@ -893,3 +893,352 @@ a,
         padding-top: calc(var(--safe-top) + 1rem);
     }
 }
+
+/* ===== ROUTINE SECTION ===== */
+.routine-section {
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-bg-tertiary);
+}
+
+.routine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.routine-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.routine-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.routine-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.routine-day-select {
+    padding: 0.5rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-bg-primary);
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    -webkit-app-region: no-drag;
+}
+
+.timer-config {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.timer-config input {
+    width: 55px;
+    padding: 0.4rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-bg-primary);
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Exercise Card */
+.exercise-card {
+    background: var(--color-bg-tertiary);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+    border-left: 3px solid var(--color-accent-primary);
+}
+
+.exercise-card.exercise-complete {
+    border-left-color: var(--color-success);
+    opacity: 0.75;
+}
+
+.exercise-card.exercise-complete .exercise-name {
+    text-decoration: line-through;
+}
+
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.exercise-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+}
+
+.exercise-target {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.exercise-note {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.exercise-divider {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.75rem 0;
+    border-top: 1px dashed var(--color-bg-tertiary);
+    margin-top: 0.5rem;
+}
+
+/* Set Rows */
+.sets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.set-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.set-row.set-done {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.set-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    min-width: 24px;
+    text-align: center;
+}
+
+.set-weight-input,
+.set-reps-input {
+    width: 60px;
+    padding: 0.4rem;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-bg-tertiary);
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+    text-align: center;
+    -webkit-app-region: no-drag;
+}
+
+.set-weight-input:focus,
+.set-reps-input:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+}
+
+.set-reps-display {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    flex: 1;
+}
+
+.set-row.set-done .set-weight-input,
+.set-row.set-done .set-reps-input {
+    opacity: 0.6;
+    background: transparent;
+    border-color: transparent;
+}
+
+/* Set Buttons */
+.btn-set {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    -webkit-app-region: no-drag;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-set-done {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-set-done:hover {
+    background: #059669;
+    transform: scale(1.1);
+}
+
+.btn-set-undo {
+    background: var(--color-bg-primary);
+    color: var(--color-text-muted);
+}
+
+.btn-set-undo:hover {
+    background: var(--color-bg-tertiary);
+}
+
+/* Timer Overlay */
+.timer-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1500;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    -webkit-app-region: no-drag;
+}
+
+.timer-overlay.active {
+    display: flex;
+}
+
+.timer-content {
+    text-align: center;
+    position: relative;
+}
+
+.timer-ring {
+    width: 180px;
+    height: 180px;
+}
+
+.timer-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--color-accent-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-label {
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.timer-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+/* History / mini charts */
+.history-exercise-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background: var(--color-bg-tertiary);
+    border-radius: 8px;
+    margin-bottom: 0.4rem;
+}
+
+.history-exercise-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.history-exercise-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: block;
+    color: var(--color-text-primary);
+}
+
+.history-exercise-best {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.mini-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+}
+
+.mini-bar {
+    width: 6px;
+    background: linear-gradient(180deg, var(--color-accent-primary), var(--color-purple));
+    border-radius: 2px;
+    min-height: 3px;
+}
+
+/* Mobile routine */
+@media (max-width: 768px) {
+    .routine-section {
+        padding: 1rem;
+    }
+
+    .routine-header {
+        flex-direction: column;
+    }
+
+    .exercise-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .set-weight-input,
+    .set-reps-input {
+        width: 50px;
+        font-size: 0.8rem;
+        padding: 0.35rem;
+    }
+
+    .timer-ring {
+        width: 150px;
+        height: 150px;
+    }
+
+    .timer-display {
+        font-size: 2.2rem;
+    }
+}

@@ -96,6 +96,53 @@
             </div>
         </div>
 
+        <!-- ===== ROUTINE SECTION ===== -->
+        <div class="routine-section" id="routineSection">
+            <div class="routine-header">
+                <div>
+                    <h2 id="routineDayName">💪 Rutina de Hoy</h2>
+                    <p class="routine-subtitle" id="routineDaySubtitle"></p>
+                </div>
+                <div class="routine-controls">
+                    <select id="routineDaySelect" class="routine-day-select">
+                        <option value="1">Lunes – Empuje</option>
+                        <option value="2">Martes – Tracción</option>
+                        <option value="3">Miércoles – Alberca</option>
+                        <option value="4">Jueves – Pierna</option>
+                        <option value="5">Viernes – Torso</option>
+                        <option value="6">Sábado – HIIT</option>
+                        <option value="0">Domingo – Alberca</option>
+                    </select>
+                    <div class="timer-config">
+                        <label>⏱️</label>
+                        <input type="number" id="restTimerInput" value="90" min="10" max="300" step="5">
+                        <span>seg</span>
+                    </div>
+                </div>
+            </div>
+            <div id="routineExercises"></div>
+            <div id="exerciseHistory" style="margin-top:1.5rem;"></div>
+        </div>
+
+        <!-- Rest Timer Overlay -->
+        <div class="timer-overlay" id="timerOverlay">
+            <div class="timer-content">
+                <svg class="timer-ring" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-bg-tertiary)" stroke-width="6" />
+                    <circle id="timerCircle" cx="60" cy="60" r="54" fill="none" stroke="var(--color-accent-primary)"
+                        stroke-width="6" stroke-linecap="round" transform="rotate(-90 60 60)"
+                        style="transition: stroke-dashoffset 0.3s;" />
+                </svg>
+                <div class="timer-display" id="timerDisplay">01:30</div>
+                <p class="timer-label">Descanso</p>
+                <div class="timer-buttons">
+                    <button class="btn btn-secondary btn-sm" id="btnResetTimer">🔄</button>
+                    <button class="btn btn-primary" id="btnStartTimer">▶ Reanudar</button>
+                    <button class="btn btn-danger btn-sm" id="btnStopTimer">⏹ Saltar</button>
+                </div>
+            </div>
+        </div>
+
         <div class="calendar-section">
             <div class="calendar-header">
                 <h2 id="calendarTitle">📅 Calendario</h2>
@@ -209,6 +256,7 @@
     </div>
 
     <script src="renderer.js"></script>
+    <script src="routines.js"></script>
     <script>
         // Register service worker for PWA (only in browser, not Electron)
         if ('serviceWorker' in navigator && !window.api) {

@@ -110,6 +110,22 @@ ipcMain.handle('update-settings', (_, settings) => {
   return data;
 });
 
+// === IPC: Exercise Logs ===
+ipcMain.handle('add-exercise-log', (_, log) => {
+  const data = loadData();
+  if (!data.exerciseLogs) data.exerciseLogs = [];
+  log.id = Date.now().toString();
+  data.exerciseLogs.push(log);
+  saveData(data);
+  return data;
+});
+ipcMain.handle('delete-exercise-log', (_, id) => {
+  const data = loadData();
+  data.exerciseLogs = (data.exerciseLogs || []).filter(l => l.id !== id);
+  saveData(data);
+  return data;
+});
+
 // === IPC: Export/Import ===
 ipcMain.handle('export-data', () => JSON.stringify(loadData(), null, 2));
 ipcMain.handle('import-data', (_, jsonString) => {
@@ -117,6 +133,7 @@ ipcMain.handle('import-data', (_, jsonString) => {
     const data = JSON.parse(jsonString);
     if (data.workouts && Array.isArray(data.workouts)) {
       if (!data.calories) data.calories = [];
+      if (!data.exerciseLogs) data.exerciseLogs = [];
       saveData(data);
       return { success: true, data };
     }

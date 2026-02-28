@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('api', {
     addCalorieEntry: (entry) => ipcRenderer.invoke('add-calorie-entry', entry),
     deleteCalorieEntry: (id) => ipcRenderer.invoke('delete-calorie-entry', id),
     resetCaloriesForDate: (dateStr) => ipcRenderer.invoke('reset-calories-for-date', dateStr),
+    addExerciseLog: (log) => ipcRenderer.invoke('add-exercise-log', log),
+    deleteExerciseLog: (id) => ipcRenderer.invoke('delete-exercise-log', id),
     updateSettings: (settings) => ipcRenderer.invoke('update-settings', settings),
     exportData: () => ipcRenderer.invoke('export-data'),
     importData: (json) => ipcRenderer.invoke('import-data', json)

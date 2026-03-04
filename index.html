@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="TrainPro">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#000000">
     <meta name="description" content="Training Dashboard Pro - Tu entrenamiento personal">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -25,19 +25,19 @@
             <p class="profile-subtitle">¿Quién entrena hoy?</p>
             <div class="profile-grid">
                 <button class="profile-card" data-profile="emilio">
-                    <div class="profile-avatar" style="background:linear-gradient(135deg,#38bdf8,#a855f7);">E</div>
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#ffffff,#cccccc);">E</div>
                     <span>Emilio</span>
                 </button>
                 <button class="profile-card" data-profile="karina">
-                    <div class="profile-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e);">K</div>
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#e0e0e0,#aaaaaa);">K</div>
                     <span>Karina</span>
                 </button>
                 <button class="profile-card" data-profile="benjamin">
-                    <div class="profile-avatar" style="background:linear-gradient(135deg,#10b981,#14b8a6);">B</div>
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#cccccc,#888888);">B</div>
                     <span>Benjamín</span>
                 </button>
                 <button class="profile-card" data-profile="iveth">
-                    <div class="profile-avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316);">I</div>
+                    <div class="profile-avatar" style="background:linear-gradient(135deg,#bbbbbb,#999999);">I</div>
                     <span>Iveth</span>
                 </button>
             </div>
@@ -65,7 +65,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">Entrenamientos</div>
-                            <div class="card-icon" style="background:rgba(56,189,248,0.15);">🏋️</div>
+                            <div class="card-icon" style="background:rgba(255,255,255,0.06);">🏋️</div>
                         </div>
                         <div class="metric-value" id="totalWorkouts">0</div>
                         <div class="metric-label">Esta semana (meta: <span id="weeklyGoalLabel">6</span>)</div>
@@ -77,7 +77,7 @@
                     <div class="card" id="caloriesCard">
                         <div class="card-header">
                             <div class="card-title">Calorías Hoy</div>
-                            <div class="card-icon" style="background:rgba(168,85,247,0.15);">🔥</div>
+                            <div class="card-icon" style="background:rgba(255,255,255,0.06);">🔥</div>
                         </div>
                         <div class="calories-card-body">
                             <div class="metric-value" id="caloriesRemaining">2,450</div>
@@ -91,7 +91,7 @@
                             </div>
                             <div class="progress-bar">
                                 <div class="progress-fill" id="calProgress"
-                                    style="width:0%;background:linear-gradient(90deg,#a855f7,#ec4899);"></div>
+                                    style="width:0%;background:linear-gradient(90deg,#cccccc,#ffffff);"></div>
                             </div>
                         </div>
                     </div>
@@ -99,26 +99,26 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">Racha</div>
-                            <div class="card-icon" style="background:rgba(16,185,129,0.15);">🔥</div>
+                            <div class="card-icon" style="background:rgba(255,255,255,0.06);">🔥</div>
                         </div>
                         <div class="metric-value" id="currentStreak">0</div>
                         <div class="metric-label">días consecutivos</div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="streakProgress"
-                                style="width:0%;background:linear-gradient(90deg,#10b981,#059669);"></div>
+                                style="width:0%;background:linear-gradient(90deg,#666666,#ffffff);"></div>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">Tiempo</div>
-                            <div class="card-icon" style="background:rgba(245,158,11,0.15);">⏱️</div>
+                            <div class="card-icon" style="background:rgba(255,255,255,0.06);">⏱️</div>
                         </div>
                         <div class="metric-value" id="totalTime">0h</div>
                         <div class="metric-label">Esta semana</div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="timeProgress"
-                                style="width:0%;background:linear-gradient(90deg,#f59e0b,#d97706);"></div>
+                                style="width:0%;background:linear-gradient(90deg,#888888,#ffffff);"></div>
                         </div>
                     </div>
                 </div>
@@ -145,13 +145,7 @@
                         </div>
                         <div class="routine-controls">
                             <select id="routineDaySelect" class="routine-day-select">
-                                <option value="1">Empuje (Push)</option>
-                                <option value="2">Tracción (Pull)</option>
-                                <option value="3">Alberca – Intervalos</option>
-                                <option value="4">Pierna</option>
-                                <option value="5">Torso Estético</option>
-                                <option value="6">HIIT</option>
-                                <option value="0">Alberca – Largo</option>
+                                <!-- Options generated dynamically per profile -->
                             </select>
                             <div class="timer-config">
                                 <label>⏱️</label>

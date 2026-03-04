@@ -1,17 +1,17 @@
 :root {
-    --color-bg-primary: #0f172a;
-    --color-bg-secondary: #1e293b;
-    --color-bg-tertiary: #334155;
-    --color-text-primary: #f1f5f9;
-    --color-text-secondary: #cbd5e1;
-    --color-text-muted: #94a3b8;
-    --color-accent-primary: #38bdf8;
-    --color-accent-secondary: #0ea5e9;
-    --color-success: #10b981;
-    --color-warning: #f59e0b;
-    --color-danger: #ef4444;
-    --color-purple: #a855f7;
-    --color-pink: #ec4899;
+    --color-bg-primary: #000000;
+    --color-bg-secondary: #0a0a0a;
+    --color-bg-tertiary: #1a1a1a;
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #cccccc;
+    --color-text-muted: #888888;
+    --color-accent-primary: #ffffff;
+    --color-accent-secondary: #e0e0e0;
+    --color-success: #ffffff;
+    --color-warning: #cccccc;
+    --color-danger: #999999;
+    --color-purple: #ffffff;
+    --color-pink: #cccccc;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --nav-height: 60px;
@@ -152,10 +152,7 @@ body {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
-    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-text-primary);
 }
 
 .profile-subtitle {
@@ -192,7 +189,7 @@ body {
 .profile-card:active {
     border-color: var(--color-accent-primary);
     transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
 }
 
 .profile-avatar {
@@ -204,7 +201,8 @@ body {
     justify-content: center;
     font-size: 1.8rem;
     font-weight: 700;
-    color: white;
+    color: black;
+    background: white;
 }
 
 /* Profile badge in header */
@@ -238,7 +236,8 @@ body {
     justify-content: center;
     font-size: 0.75rem;
     font-weight: 700;
-    color: white;
+    color: black;
+    background: white;
 }
 
 /* ===== HEADER ===== */
@@ -255,10 +254,7 @@ body {
 .header h1 {
     font-size: 1.6rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-text-primary);
 }
 
 .date-display {
@@ -302,13 +298,13 @@ body {
 }
 
 .btn-danger {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--color-danger);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text-muted);
     border: 1px solid transparent;
 }
 
 .btn-danger:hover {
-    background: rgba(239, 68, 68, 0.3);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .btn-sm {
@@ -371,15 +367,13 @@ a,
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .metric-value {
     font-size: 1.8rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--color-accent-primary), var(--color-purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-text-primary);
 }
 
 .metric-label {
@@ -398,7 +392,7 @@ a,
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-purple));
+    background: linear-gradient(90deg, #666666, #ffffff);
     border-radius: 3px;
     transition: width 0.5s ease;
 }
@@ -416,7 +410,7 @@ a,
 }
 
 .calories-consumed strong {
-    color: var(--color-pink);
+    color: var(--color-text-primary);
 }
 
 .calories-quick-add {
@@ -430,7 +424,7 @@ a,
     width: 65px;
     padding: 0.4rem;
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     color: var(--color-text-primary);
     font-size: 0.8rem;
@@ -520,18 +514,18 @@ a,
 }
 
 .calendar-day:hover {
-    background: var(--color-bg-primary);
+    background: rgba(255, 255, 255, 0.08);
     transform: scale(1.05);
 }
 
 .calendar-day.completed {
-    background: linear-gradient(135deg, var(--color-success), #059669);
-    color: white;
+    background: #ffffff;
+    color: #000000;
 }
 
 .calendar-day.today {
     border: 2px solid var(--color-accent-primary);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.12);
 }
 
 .calendar-day.day-header {
@@ -569,14 +563,14 @@ a,
 
 .day-calories {
     font-size: 0.5rem;
-    color: var(--color-pink);
+    color: var(--color-text-muted);
     font-weight: 600;
     margin-top: 1px;
     line-height: 1;
 }
 
 .calendar-day.completed .day-calories {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(0, 0, 0, 0.6);
 }
 
 /* ===== CHART ===== */
@@ -614,7 +608,7 @@ a,
 
 .bar {
     width: 100%;
-    background: linear-gradient(180deg, var(--color-accent-primary), var(--color-purple));
+    background: linear-gradient(180deg, #ffffff, #666666);
     border-radius: 3px 3px 0 0;
     min-height: 3px;
     transition: all 0.3s ease;
@@ -628,7 +622,7 @@ a,
 
 .bar-value {
     font-size: 0.6rem;
-    color: var(--color-accent-primary);
+    color: var(--color-text-primary);
     margin-bottom: 3px;
     font-weight: 600;
 }
@@ -689,8 +683,8 @@ a,
 }
 
 .status-completed {
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--color-success);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
 }
 
 .intensity-badge {
@@ -701,23 +695,23 @@ a,
 }
 
 .intensity-Baja {
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--color-success);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-text-secondary);
 }
 
 .intensity-Moderada {
-    background: rgba(56, 189, 248, 0.15);
-    color: var(--color-accent-primary);
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--color-text-primary);
 }
 
 .intensity-Alta {
-    background: rgba(245, 158, 11, 0.15);
-    color: var(--color-warning);
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--color-text-primary);
 }
 
 .intensity-Máxima {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--color-danger);
+    background: rgba(255, 255, 255, 0.25);
+    color: var(--color-text-primary);
 }
 
 /* ===== MODAL ===== */
@@ -728,7 +722,7 @@ a,
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.85);
     z-index: 1000;
     align-items: flex-end;
     justify-content: center;
@@ -790,7 +784,7 @@ a,
     width: 100%;
     padding: 0.65rem;
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     color: var(--color-text-primary);
     font-size: 0.95rem;
@@ -803,7 +797,7 @@ a,
 .form-group textarea:focus {
     outline: none;
     border-color: var(--color-accent-primary);
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
 .form-group textarea {
@@ -828,18 +822,18 @@ a,
 }
 
 .toast-success {
-    background: var(--color-success);
-    color: white;
+    background: #ffffff;
+    color: #000000;
 }
 
 .toast-error {
-    background: var(--color-danger);
-    color: white;
+    background: #333333;
+    color: #ffffff;
 }
 
 .toast-info {
-    background: var(--color-accent-primary);
-    color: var(--color-bg-primary);
+    background: rgba(255, 255, 255, 0.9);
+    color: #000000;
 }
 
 @keyframes toastIn {
@@ -880,7 +874,7 @@ a,
     left: 0;
     right: 0;
     background: var(--color-bg-secondary);
-    border-top: 1px solid var(--color-accent-primary);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
@@ -923,7 +917,7 @@ a,
 .routine-day-select {
     padding: 0.45rem 0.6rem;
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     color: var(--color-text-primary);
     font-size: 0.82rem;
@@ -945,7 +939,7 @@ a,
     width: 50px;
     padding: 0.35rem;
     background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-bg-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     color: var(--color-text-primary);
     font-size: 0.82rem;
@@ -959,11 +953,11 @@ a,
     padding: 0.85rem;
     margin-bottom: 0.6rem;
     border: 1px solid var(--color-bg-tertiary);
-    border-left: 3px solid var(--color-accent-primary);
+    border-left: 3px solid #ffffff;
 }
 
 .exercise-card.exercise-complete {
-    border-left-color: var(--color-success);
+    border-left-color: #666666;
     opacity: 0.7;
 }
 
@@ -989,8 +983,8 @@ a,
     font-size: 0.7rem;
     padding: 0.2rem 0.5rem;
     border-radius: 10px;
-    background: rgba(56, 189, 248, 0.15);
-    color: var(--color-accent-primary);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
     font-weight: 600;
     white-space: nowrap;
     flex-shrink: 0;
@@ -1028,7 +1022,7 @@ a,
 }
 
 .set-row.set-done {
-    background: rgba(16, 185, 129, 0.1);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .set-label {
@@ -1043,7 +1037,7 @@ a,
 .set-reps-input {
     width: 55px;
     padding: 0.35rem;
-    background: var(--color-bg-primary);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--color-bg-tertiary);
     border-radius: 6px;
     color: var(--color-text-primary);
@@ -1085,8 +1079,8 @@ a,
 }
 
 .btn-set-done {
-    background: var(--color-success);
-    color: white;
+    background: #ffffff;
+    color: #000000;
 }
 
 .btn-set-done:active {
@@ -1094,7 +1088,7 @@ a,
 }
 
 .btn-set-undo {
-    background: var(--color-bg-primary);
+    background: var(--color-bg-tertiary);
     color: var(--color-text-muted);
 }
 
@@ -1106,7 +1100,7 @@ a,
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.98);
+    background: rgba(0, 0, 0, 0.98);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     z-index: 1500;
@@ -1142,7 +1136,7 @@ a,
     transform: translate(-50%, -50%);
     font-size: 3rem;
     font-weight: 700;
-    color: var(--color-accent-primary);
+    color: var(--color-text-primary);
     font-variant-numeric: tabular-nums;
 }
 
@@ -1198,7 +1192,7 @@ a,
 
 .mini-bar {
     width: 5px;
-    background: linear-gradient(180deg, var(--color-accent-primary), var(--color-purple));
+    background: linear-gradient(180deg, #ffffff, #666666);
     border-radius: 2px;
     min-height: 3px;
 }

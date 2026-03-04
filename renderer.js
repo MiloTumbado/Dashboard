@@ -1,9 +1,9 @@
 // ==================== PROFILES ====================
 const PROFILES = {
-    emilio: { name: 'Emilio', initial: 'E', gradient: 'linear-gradient(135deg,#38bdf8,#a855f7)' },
-    karina: { name: 'Karina', initial: 'K', gradient: 'linear-gradient(135deg,#ec4899,#f43f5e)' },
-    benjamin: { name: 'Benjamín', initial: 'B', gradient: 'linear-gradient(135deg,#10b981,#14b8a6)' },
-    iveth: { name: 'Iveth', initial: 'I', gradient: 'linear-gradient(135deg,#f59e0b,#f97316)' }
+    emilio: { name: 'Emilio', initial: 'E', gradient: 'linear-gradient(135deg,#ffffff,#cccccc)' },
+    karina: { name: 'Karina', initial: 'K', gradient: 'linear-gradient(135deg,#e0e0e0,#aaaaaa)' },
+    benjamin: { name: 'Benjamín', initial: 'B', gradient: 'linear-gradient(135deg,#cccccc,#888888)' },
+    iveth: { name: 'Iveth', initial: 'I', gradient: 'linear-gradient(135deg,#bbbbbb,#999999)' }
 };
 let currentProfile = null;
 
@@ -250,14 +250,14 @@ function updateCaloriesCard() {
     document.getElementById('calConsumedDisplay').textContent = consumed.toLocaleString();
     document.getElementById('calProgress').style.width = pct + '%';
 
-    // Color change when over goal
+    // Color change when over goal (monochrome)
     const fill = document.getElementById('calProgress');
     if (consumed >= goal) {
-        fill.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+        fill.style.background = 'linear-gradient(90deg, #666666, #333333)';
     } else if (consumed >= goal * 0.8) {
-        fill.style.background = 'linear-gradient(90deg, #f59e0b, #ec4899)';
+        fill.style.background = 'linear-gradient(90deg, #999999, #666666)';
     } else {
-        fill.style.background = 'linear-gradient(90deg, #a855f7, #ec4899)';
+        fill.style.background = 'linear-gradient(90deg, #cccccc, #ffffff)';
     }
 }
 

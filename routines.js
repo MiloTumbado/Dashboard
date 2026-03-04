@@ -1,74 +1,150 @@
 // ==================== ROUTINE DATA ====================
-const ROUTINES = {
-    1: { // Lunes
-        name: '💪 Empuje (Push)', subtitle: 'Pecho, Hombros, Tríceps',
-        exercises: [
-            { name: 'Press Inclinado con Mancuernas', sets: 4, reps: '10', note: 'Volumen parte alta del pecho' },
-            { name: 'Press Militar (máquina o barra)', sets: 3, reps: '10', note: '' },
-            { name: 'Elevaciones Laterales (polea/mancuerna)', sets: 4, reps: '15-20', note: 'Clave para la anchura' },
-            { name: 'Fondos en Paralelas', sets: 3, reps: 'Al fallo', note: '' },
-            { name: 'Extensión de Tríceps en Polea', sets: 3, reps: '12', note: '' }
-        ]
+// Profile-specific routines: keyed by profile name
+const PROFILE_ROUTINES = {
+    emilio: {
+        1: { // Día 1
+            name: '💪 Empuje (Pecho Alto y Hombros)', subtitle: 'Llenar la parte superior del torso',
+            exercises: [
+                { name: 'Press inclinado con mancuernas', sets: 4, reps: '8-10', note: '' },
+                { name: 'Press de hombros en máquina (Hammer Strength)', sets: 3, reps: '10', note: '' },
+                { name: 'Aperturas en máquina (Peck Deck)', sets: 3, reps: '15', note: '' },
+                { name: 'Elevaciones laterales con mancuernas', sets: 4, reps: '20', note: 'Descansa solo 45 segundos' },
+                { name: 'Fondos en máquina o paralelas', sets: 3, reps: 'Al fallo', note: '' },
+                { name: 'Extensión de tríceps en polea (cuerda)', sets: 3, reps: '12', note: '' }
+            ]
+        },
+        2: { // Día 2
+            name: '🔗 Tracción (Espalda Ancha y Bíceps)', subtitle: 'Maximizar la anchura',
+            exercises: [
+                { name: 'Jalón al pecho agarre abierto', sets: 4, reps: '10', note: '' },
+                { name: 'Remo en polea baja (agarre estrecho)', sets: 3, reps: '12', note: '' },
+                { name: 'Remo inclinado con mancuerna a una mano', sets: 3, reps: '10/lado', note: '' },
+                { name: 'Face-pulls en polea', sets: 3, reps: '15', note: 'Para hombro posterior y postura' },
+                { name: 'Curl de bíceps con barra Z o predicador', sets: 3, reps: '12', note: '' },
+                { name: 'Curl martillo', sets: 3, reps: '12', note: '' }
+            ]
+        },
+        3: { // Día 3
+            name: '🦵 Pierna Completa y Core', subtitle: 'Tren inferior + abdomen',
+            exercises: [
+                { name: 'Prensa de piernas', sets: 4, reps: '12', note: 'Pies a la anchura de hombros' },
+                { name: 'Peso muerto rumano (mancuernas o barra)', sets: 4, reps: '10', note: '' },
+                { name: 'Extensiones de cuádriceps', sets: 3, reps: '15', note: '' },
+                { name: 'Curl de pierna acostado o sentado', sets: 3, reps: '15', note: '' },
+                { name: 'Elevación de talones sentado o de pie', sets: 4, reps: '20', note: '' },
+                { name: 'Plancha abdominal (Plank)', sets: 3, reps: '1 min', note: '' }
+            ]
+        },
+        4: { // Día 4
+            name: '🔺 Hipertrofia V-Taper (Hombros y Espalda)', subtitle: 'El más importante para la estética',
+            exercises: [
+                { name: 'Dominadas (o jalón asistido)', sets: 4, reps: 'Al fallo', note: '' },
+                { name: 'Press militar de pie con barra o mancuernas', sets: 3, reps: '10', note: '' },
+                { name: 'Elevaciones laterales en polea (un brazo)', sets: 4, reps: '15', note: '' },
+                { name: 'Remo en máquina con apoyo al pecho', sets: 3, reps: '12', note: '' },
+                { name: 'Encogimientos de hombros con mancuernas', sets: 3, reps: '15', note: '' },
+                { name: 'Copa de tríceps a dos manos', sets: 3, reps: '12', note: '' }
+            ]
+        },
+        5: { // Día HIIT
+            name: '⚡ HIIT – Alta Intensidad', subtitle: 'Cardio explosivo + abdomen',
+            isCardio: true,
+            exercises: [
+                { name: '— Circuito 20 minutos —', sets: 0, reps: '', note: '' },
+                { name: 'Sprint en caminadora o Remo', sets: 10, reps: '30 seg', note: '30 seg descanso entre series' },
+                { name: '— Finalizador (3 rondas) —', sets: 0, reps: '', note: '' },
+                { name: 'Elevación de piernas colgado', sets: 3, reps: '15', note: '' },
+                { name: 'Russian Twists', sets: 3, reps: '20', note: 'Para marcar el abdomen' }
+            ]
+        },
+        0: { // Descanso
+            name: '🧘 Descanso', subtitle: 'Recuperación activa',
+            isCardio: true,
+            exercises: [
+                { name: 'Día de descanso o caminata ligera', sets: 1, reps: '30-40 min', note: 'Estiramiento y recuperación' }
+            ]
+        }
     },
-    2: { // Martes
-        name: '🔗 Tracción (Pull)', subtitle: 'Espalda, Bíceps',
-        exercises: [
-            { name: 'Dominadas / Jalón al Pecho', sets: 4, reps: '8-10', note: '' },
-            { name: 'Remo con Barra / Máquina', sets: 3, reps: '10', note: '' },
-            { name: 'Pullover en Polea Alta', sets: 3, reps: '15', note: 'Aísla el dorsal' },
-            { name: 'Face-Pulls', sets: 3, reps: '15', note: 'Salud de hombro y postura' },
-            { name: 'Curl Bíceps con Barra Z', sets: 3, reps: '12', note: '' }
-        ]
-    },
-    3: { // Miércoles
-        name: '🏊 Alberca – Intervalos', subtitle: 'Natación Miércoles',
-        isCardio: true,
-        exercises: [
-            { name: '200m calentamiento suave', sets: 1, reps: '—', note: '' },
-            { name: '50m ritmo fuerte + 30s descanso', sets: 8, reps: '2 largos', note: 'Máxima intensidad' },
-            { name: '100m afloje', sets: 1, reps: '—', note: '' }
-        ]
-    },
-    4: { // Jueves
-        name: '🦵 Pierna', subtitle: 'Tren inferior completo',
-        exercises: [
-            { name: 'Prensa de Piernas', sets: 4, reps: '12', note: '' },
-            { name: 'Peso Muerto Rumano', sets: 4, reps: '10', note: 'Femorales y glúteos' },
-            { name: 'Extensiones de Cuádriceps', sets: 3, reps: '15', note: '' },
-            { name: 'Curl de Pierna Acostado', sets: 3, reps: '15', note: '' },
-            { name: 'Elevación de Talones (Pantorrilla)', sets: 4, reps: '20', note: '' }
-        ]
-    },
-    5: { // Viernes
-        name: '🔺 Torso Estético', subtitle: 'Enfoque V-Taper',
-        exercises: [
-            { name: 'Press de Hombros Sentado', sets: 3, reps: '10', note: '' },
-            { name: 'Jalón al Pecho Agarre Cerrado', sets: 3, reps: '12', note: '' },
-            { name: 'Elevaciones Laterales (mancuernas)', sets: 5, reps: '15-20', note: 'Bajo peso, mucha técnica' },
-            { name: 'Remo a Una Mano con Mancuerna', sets: 3, reps: '12/lado', note: '' },
-            { name: 'Cruces de Poleas (Crossovers)', sets: 3, reps: '15', note: '' }
-        ]
-    },
-    6: { // Sábado
-        name: '⚡ HIIT – Alta Intensidad', subtitle: 'Cardio explosivo',
-        isCardio: true,
-        exercises: [
-            { name: 'Calentamiento', sets: 1, reps: '5 min', note: '' },
-            { name: 'Sprint 30s + Descanso 30s (Caminadora)', sets: 1, reps: '20 min', note: 'Máxima velocidad' },
-            { name: '— O Circuito Funcional (4 rondas) —', sets: 0, reps: '', note: '' },
-            { name: 'Burpees', sets: 4, reps: '30 seg', note: '' },
-            { name: 'Mountain Climbers', sets: 4, reps: '30 seg', note: '' },
-            { name: 'Sentadillas con Salto', sets: 4, reps: '30 seg', note: '1 min descanso entre rondas' }
-        ]
-    },
-    0: { // Domingo
-        name: '🏊 Alberca – Largo', subtitle: 'Recuperación activa',
-        isCardio: true,
-        exercises: [
-            { name: 'Nado continuo (Crol o Pecho)', sets: 1, reps: '30-40 min', note: 'Ritmo controlado, respiración estable' },
-        ]
+    // Default routine for other profiles (karina, benjamin, iveth)
+    _default: {
+        1: { // Lunes
+            name: '💪 Empuje (Push)', subtitle: 'Pecho, Hombros, Tríceps',
+            exercises: [
+                { name: 'Press Inclinado con Mancuernas', sets: 4, reps: '10', note: 'Volumen parte alta del pecho' },
+                { name: 'Press Militar (máquina o barra)', sets: 3, reps: '10', note: '' },
+                { name: 'Elevaciones Laterales (polea/mancuerna)', sets: 4, reps: '15-20', note: 'Clave para la anchura' },
+                { name: 'Fondos en Paralelas', sets: 3, reps: 'Al fallo', note: '' },
+                { name: 'Extensión de Tríceps en Polea', sets: 3, reps: '12', note: '' }
+            ]
+        },
+        2: { // Martes
+            name: '🔗 Tracción (Pull)', subtitle: 'Espalda, Bíceps',
+            exercises: [
+                { name: 'Dominadas / Jalón al Pecho', sets: 4, reps: '8-10', note: '' },
+                { name: 'Remo con Barra / Máquina', sets: 3, reps: '10', note: '' },
+                { name: 'Pullover en Polea Alta', sets: 3, reps: '15', note: 'Aísla el dorsal' },
+                { name: 'Face-Pulls', sets: 3, reps: '15', note: 'Salud de hombro y postura' },
+                { name: 'Curl Bíceps con Barra Z', sets: 3, reps: '12', note: '' }
+            ]
+        },
+        3: { // Miércoles
+            name: '🏊 Alberca – Intervalos', subtitle: 'Natación Miércoles',
+            isCardio: true,
+            exercises: [
+                { name: '200m calentamiento suave', sets: 1, reps: '—', note: '' },
+                { name: '50m ritmo fuerte + 30s descanso', sets: 8, reps: '2 largos', note: 'Máxima intensidad' },
+                { name: '100m afloje', sets: 1, reps: '—', note: '' }
+            ]
+        },
+        4: { // Jueves
+            name: '🦵 Pierna', subtitle: 'Tren inferior completo',
+            exercises: [
+                { name: 'Prensa de Piernas', sets: 4, reps: '12', note: '' },
+                { name: 'Peso Muerto Rumano', sets: 4, reps: '10', note: 'Femorales y glúteos' },
+                { name: 'Extensiones de Cuádriceps', sets: 3, reps: '15', note: '' },
+                { name: 'Curl de Pierna Acostado', sets: 3, reps: '15', note: '' },
+                { name: 'Elevación de Talones (Pantorrilla)', sets: 4, reps: '20', note: '' }
+            ]
+        },
+        5: { // Viernes
+            name: '🔺 Torso Estético', subtitle: 'Enfoque V-Taper',
+            exercises: [
+                { name: 'Press de Hombros Sentado', sets: 3, reps: '10', note: '' },
+                { name: 'Jalón al Pecho Agarre Cerrado', sets: 3, reps: '12', note: '' },
+                { name: 'Elevaciones Laterales (mancuernas)', sets: 5, reps: '15-20', note: 'Bajo peso, mucha técnica' },
+                { name: 'Remo a Una Mano con Mancuerna', sets: 3, reps: '12/lado', note: '' },
+                { name: 'Cruces de Poleas (Crossovers)', sets: 3, reps: '15', note: '' }
+            ]
+        },
+        6: { // Sábado
+            name: '⚡ HIIT – Alta Intensidad', subtitle: 'Cardio explosivo',
+            isCardio: true,
+            exercises: [
+                { name: 'Calentamiento', sets: 1, reps: '5 min', note: '' },
+                { name: 'Sprint 30s + Descanso 30s (Caminadora)', sets: 1, reps: '20 min', note: 'Máxima velocidad' },
+                { name: '— O Circuito Funcional (4 rondas) —', sets: 0, reps: '', note: '' },
+                { name: 'Burpees', sets: 4, reps: '30 seg', note: '' },
+                { name: 'Mountain Climbers', sets: 4, reps: '30 seg', note: '' },
+                { name: 'Sentadillas con Salto', sets: 4, reps: '30 seg', note: '1 min descanso entre rondas' }
+            ]
+        },
+        0: { // Domingo
+            name: '🏊 Alberca – Largo', subtitle: 'Recuperación activa',
+            isCardio: true,
+            exercises: [
+                { name: 'Nado continuo (Crol o Pecho)', sets: 1, reps: '30-40 min', note: 'Ritmo controlado, respiración estable' },
+            ]
+        }
     }
 };
+
+// Helper to get the routines for the current profile
+function getRoutinesForProfile() {
+    if (currentProfile && PROFILE_ROUTINES[currentProfile]) {
+        return PROFILE_ROUTINES[currentProfile];
+    }
+    return PROFILE_ROUTINES._default;
+}
 
 // ==================== STATE ====================
 let restTimerInterval = null;
@@ -77,8 +153,25 @@ let restTimerDefault = 90;
 
 // ==================== INIT ====================
 function initRoutines() {
+    updateRoutineSelector();
     renderTodayRoutine();
     bindRoutineEvents();
+}
+
+function updateRoutineSelector() {
+    const routines = getRoutinesForProfile();
+    const select = document.getElementById('routineDaySelect');
+    select.innerHTML = '';
+    // Build options from the routine keys
+    const keys = Object.keys(routines).map(Number).sort((a, b) => a - b);
+    keys.forEach(key => {
+        const r = routines[key];
+        const opt = document.createElement('option');
+        opt.value = key;
+        // Strip emoji for cleaner select label
+        opt.textContent = r.name.replace(/^[\p{Emoji}\s]+/u, '').trim() || r.name;
+        select.appendChild(opt);
+    });
 }
 
 function bindRoutineEvents() {
@@ -95,21 +188,36 @@ function bindRoutineEvents() {
 
 // ==================== RENDER ROUTINE ====================
 function renderTodayRoutine() {
+    const routines = getRoutinesForProfile();
     const dayOfWeek = new Date().getDay();
-    document.getElementById('routineDaySelect').value = dayOfWeek;
-    renderRoutineForDay(dayOfWeek);
+    const select = document.getElementById('routineDaySelect');
+
+    // If today's day exists in routines, select it; otherwise pick first
+    if (routines[dayOfWeek]) {
+        select.value = dayOfWeek;
+        renderRoutineForDay(dayOfWeek);
+    } else {
+        const firstKey = Object.keys(routines).map(Number).sort((a, b) => a - b)[0];
+        select.value = firstKey;
+        renderRoutineForDay(firstKey);
+    }
 }
 
 function renderRoutineForDay(dayOfWeek) {
-    const routine = ROUTINES[dayOfWeek];
+    const routines = getRoutinesForProfile();
+    const routine = routines[dayOfWeek];
+    if (!routine) return;
+
     const container = document.getElementById('routineExercises');
     const todayStr = formatDateISO(new Date());
 
     document.getElementById('routineDayName').textContent = routine.name;
     document.getElementById('routineDaySubtitle').textContent = routine.subtitle;
 
-    // Get today's logged sets
-    const todayLogs = (appData.exerciseLogs || []).filter(l => l.date === todayStr);
+    // FIX: Filter logs by BOTH date AND routineDay to prevent data bleeding
+    const todayLogs = (appData.exerciseLogs || []).filter(
+        l => l.date === todayStr && l.routineDay === dayOfWeek
+    );
 
     container.innerHTML = routine.exercises.map((ex, exIdx) => {
         if (ex.sets === 0) {
@@ -132,7 +240,7 @@ function renderRoutineForDay(dayOfWeek) {
                            ${isDone ? 'disabled' : ''}>
                     ${isDone
                     ? `<button class="btn-set btn-set-undo" onclick="undoSet(${exIdx}, ${s})">↩️</button>`
-                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s}, '${ex.name}')">✓</button>`
+                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s}, '${ex.name.replace(/'/g, "\\'")}')">✓</button>`
                 }
                 </div>
             `);
@@ -164,7 +272,7 @@ function renderRoutineForDay(dayOfWeek) {
                                 <span class="set-reps-display">${ex.reps}</span>
                                 ${log
                     ? `<button class="btn-set btn-set-undo" onclick="undoSet(${exIdx}, ${s + 1})">↩️</button>`
-                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s + 1}, '${ex.name}', true)">✓</button>`}
+                    : `<button class="btn-set btn-set-done" onclick="completeSet(${exIdx}, ${s + 1}, '${ex.name.replace(/'/g, "\\'")}', true)">✓</button>`}
                             </div>`;
         }).join('')}
                     </div>
@@ -182,8 +290,12 @@ async function completeSet(exIdx, setNum, exName, isCardio = false) {
     const weight = isCardio ? 0 : parseFloat(document.getElementById(`weight-${exIdx}-${setNum}`)?.value) || 0;
     const reps = isCardio ? 0 : parseInt(document.getElementById(`reps-${exIdx}-${setNum}`)?.value) || 0;
 
+    // Store the routineDay to prevent data bleeding between routines
+    const routineDay = parseInt(document.getElementById('routineDaySelect').value);
+
     const log = {
         date: todayStr,
+        routineDay: routineDay,
         exerciseIdx: exIdx,
         exerciseName: exName,
         setNumber: setNum,
@@ -203,19 +315,18 @@ async function completeSet(exIdx, setNum, exName, isCardio = false) {
         console.error('Error saving log:', e);
     }
 
-    const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
-    renderRoutineForDay(dayOfWeek);
+    renderRoutineForDay(routineDay);
 }
 
 async function undoSet(exIdx, setNum) {
     const todayStr = formatDateISO(new Date());
+    const routineDay = parseInt(document.getElementById('routineDaySelect').value);
     const log = (appData.exerciseLogs || []).find(
-        l => l.date === todayStr && l.exerciseIdx === exIdx && l.setNumber === setNum
+        l => l.date === todayStr && l.routineDay === routineDay && l.exerciseIdx === exIdx && l.setNumber === setNum
     );
     if (log) {
         appData = await DB.deleteExerciseLog(log.id);
-        const dayOfWeek = parseInt(document.getElementById('routineDaySelect').value);
-        renderRoutineForDay(dayOfWeek);
+        renderRoutineForDay(routineDay);
     }
 }
 
@@ -274,14 +385,20 @@ function updateTimerDisplay() {
 // ==================== EXERCISE HISTORY ====================
 function renderExerciseHistory(dayOfWeek) {
     const container = document.getElementById('exerciseHistory');
-    const routine = ROUTINES[dayOfWeek];
+    const routines = getRoutinesForProfile();
+    const routine = routines[dayOfWeek];
     if (!routine || routine.isCardio) {
         container.innerHTML = '';
         return;
     }
 
+    // FIX: Also filter by routineDay for history accuracy
     const allLogs = (appData.exerciseLogs || []).filter(l => {
-        return routine.exercises.some((ex, idx) => ex.name === l.exerciseName);
+        // Support old logs without routineDay (match by exercise name)
+        if (l.routineDay !== undefined) {
+            return l.routineDay === dayOfWeek;
+        }
+        return routine.exercises.some((ex) => ex.name === l.exerciseName);
     });
 
     if (allLogs.length === 0) {
